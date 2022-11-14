@@ -1,35 +1,33 @@
 from typing import List
 import json
+import csv
 
-def parse_csv(csv: str, separator: str=',', quote: str='"') -> List[List[str]]:
-    #print(csv)
-    #print(len(csv), separator, quote)
-    ml = []
+def parse_csv(csvs: str, separator: str=',', quote: str='"') -> List[List[str]]:
+    
+    mlist = []
     #return []
-    nl = []
-    for i in range(len(csv)):
-      if csv[i] == separator:
-        #print(csv[i-1])
-        nl.append(csv[i-1])
+    nlist = []
+    if len(csvs) == 0:
+      return [[""]]
+    lines = csvs.splitlines(True)
+    #print(lines)
+    reader = csv.reader(lines, delimiter = separator, quotechar=quote)
+    parsed_csv = list(reader)
+    for nl in parsed_csv:
+      nlist = []
+      #print(nl)
+      if len(nl) == 0:
+        nlist.append("j")
+        nlist.append("")
+        nlist.pop(0)
+        print(nlist)
+        mlist.append(nlist)
+        nlist = []
+          
+      else:
         #print(nl)
-      elif csv[i] == "\n":
-        #print(csv[i-1])
-        nl.append(csv[i-1])
-        #print(nl)
-        #nl = [i.replace("'", "") for i in nl]
-        js_str = json.dumps(nl)
-        print(type(js_str))
-        #res = [item.replace("'", "") for item in js_str]
-        ml.append(js_str)
-        nl = []
-      elif csv[i] == csv[-1]:
-        #print(csv[-1])
-        nl.append(csv[-1])
-        #print(nl)
-        #nl = [i.replace("'", "") for i in nl]
-        js_str = json.dumps(nl)
-        print(js_str)
-        ml.append(nl)
-        nl = []
-    #ml = [item.replace("'", "") for item in ml]
-    return ml 
+        mlist.append(nl)
+  
+    #print(type(mlist))
+    #return list(mlist)
+    return mlist
